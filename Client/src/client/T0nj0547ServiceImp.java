@@ -80,7 +80,7 @@ public class T0nj0547ServiceImp implements T0nj0547Service {
                            .build();
         } catch (Exception e) {
             // TODO: Add catch code
-            e.printStackTrace();
+//            e.printStackTrace();
             System.out.println(e.getMessage());
             String resp = "{\"message\":\"" + e.getMessage().replace("\"", "\'") + "\"}";
             return Response.status(Response.Status.BAD_REQUEST)
