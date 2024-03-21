@@ -5,7 +5,7 @@
     <session-config>
         <cookie-config>
             <http-only>true</http-only>
-            <secure>false</secure>
+            <secure>true</secure>
         </cookie-config>
     </session-config>
     <resource-ref>
