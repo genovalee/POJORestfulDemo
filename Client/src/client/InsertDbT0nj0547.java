@@ -1,5 +1,7 @@
 package client;
 
+import client.db.entity.T0nj0547;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

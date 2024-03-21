@@ -1,4 +1,4 @@
-package client;
+package client.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,5 +1,7 @@
 package client;
 
+import client.db.entity.T0nj0547;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.Connection;
