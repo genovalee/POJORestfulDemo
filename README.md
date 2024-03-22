@@ -11,7 +11,7 @@ MASTER TABLE:
   REGOFC       VARCHAR2(15),          --登記機關  
   REGOFCCOMT   VARCHAR2(255),         --登記機關說明  
   BUSSLOCATION VARCHAR2(512),         --商業所在地, 
-  TXDAT     DATE, 
+  TXDAT        DATE, 
   constraint PK_T0NJ0547 primary key (BUSSRFNO, REGOFC) 
 ); 
 </pre>
