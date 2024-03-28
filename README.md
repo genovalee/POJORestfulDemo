@@ -1,5 +1,4 @@
 # POJO RESTFul Api 程式撰寫、測試 
-# POJO RESTFul Api 程式撰寫、測試及部署 
 ## 建立 MD 資料表
 
 MASTER TABLE:
