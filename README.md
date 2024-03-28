@@ -103,7 +103,7 @@ interface T0nj0547Service {
 
             InsertDbT0nj0547 insT0nj0547 = new InsertDbT0nj0547(conn, t0nj0547);
             insT0nj0547.InsertDbT0nj0547();
-            List<T0nj0547d> businessItemOldList = t0nj0547.getBusinessItemOld();
+            List&lt;T0nj0547d&gt; businessItemOldList = t0nj0547.getBusinessItemOld();
             if (businessItemOldList.size() > 0) {
                 InsertDbT0nj0547d insT0nj0547d = new InsertDbT0nj0547d(conn, businessItemOldList,t0nj0547.getBussrfno(),t0nj0547.getRegofc());
                 insT0nj0547d.InsertDbT0nj0547d();
