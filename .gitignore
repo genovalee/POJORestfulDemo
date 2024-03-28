@@ -1,4 +1,5 @@
 *.jdb
 *.lck
-.adf/
-.data/
+/.adf/
+/.data/
+/src/
