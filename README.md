@@ -68,7 +68,8 @@ interface T0nj0547Service {
 </pre>
 ## 增設Java Class實作上面宣告的Interface
 ### Override addT0nj0547方法
-<pre style="color:#000000;background:#ffffff;">public class T0nj0547ServiceImp implements T0nj0547Service {
+<pre style="color:#000000;background:#ffffff;">
+public class T0nj0547ServiceImp implements T0nj0547Service {
     private Connection conn
     private final String ACCESSKEY = "eHh4eHh4Onl5eXl5eQ";
     private String resp = "";
@@ -205,7 +206,7 @@ public class InsertDbT0nj0547d {
 }
 </pre> 
 ## 將T0nj0547ServiceImp Create restful web service
-![queryData](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_010.png)
+![create Resuful Service](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_010.png)
 ## 測試資料payload
 <pre style="color:#000000;background:#ffffff;">
 {
