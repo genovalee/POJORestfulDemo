@@ -209,7 +209,7 @@ public class InsertDbT0nj0547d {
 ## 測試資料payload
 <pre style="color:#000000;background:#ffffff;">
 {
-    "President_No": "09876543",
+    "President_No": "01465625",
     "Business_Name": "XXXXX行",
     "Business_Current_Status": "01",
     "Business_Current_Status_Desc": "核准設立",
@@ -230,6 +230,6 @@ public class InsertDbT0nj0547d {
         }
     ]
 }
-</pre>  
+</pre> 
 ![post test](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_002.png)
 ![queryData](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_003.png)
