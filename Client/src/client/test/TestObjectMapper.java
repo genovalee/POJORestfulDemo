@@ -24,8 +24,8 @@ public class TestObjectMapper {
         System.out.println("regofccomt: " + t0nj0547.getRegofccomt());
         System.out.println("busslocation: " + t0nj0547.getBusslocation());
 
-        List<T0nj0547d> businessItemOldList = t0nj0547.getBusinessItemOld();
-        for (T0nj0547d item : businessItemOldList) {
+        List<T0nj0547d> t0nj0547d = t0nj0547.getT0nj0547d();
+        for (T0nj0547d item : t0nj0547d) {
             System.out.println("Business Item Seq No: " + item.getIt());
             System.out.println("Business Item: " + item.getSalit());
             System.out.println("Business Item Desc: " + item.getSalitcomt());

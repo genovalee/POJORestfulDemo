@@ -27,7 +27,7 @@ public class T0nj0547 {
     @JsonProperty("Business_Address")
     private String busslocation;
     @JsonProperty("Business_Item_Old")
-    private List<T0nj0547d> businessItemOld;
+    private List<T0nj0547d> t0nj0547d;
 
     public void setBussrfno(String bussrfno) {
         this.bussrfno = bussrfno;
@@ -93,11 +93,11 @@ public class T0nj0547 {
         return busslocation;
     }
 
-    public List<T0nj0547d> getBusinessItemOld() {
-        return businessItemOld;
+    public void setT0nj0547d(List<T0nj0547d> t0nj0547d) {
+        this.t0nj0547d = t0nj0547d;
     }
 
-    public void setBusinessItemOld(List<T0nj0547d> businessItemOld) {
-        this.businessItemOld = businessItemOld;
+    public List<T0nj0547d> getT0nj0547d() {
+        return t0nj0547d;
     }
 }
