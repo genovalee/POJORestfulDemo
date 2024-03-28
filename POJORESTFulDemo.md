@@ -2,22 +2,24 @@
 ## 建立 MD 資料表
 
 MASTER TABLE:
-<pre style="color:#000000;background:#ffffff;">Create table t0nj0547 
+<pre style="color:#000000;background:#ffffff;">
+Create table t0nj0547 
 ( 
   BUSSRFNO     VARCHAR2(8),           --商業統一編號  
   BUSSNM       VARCHAR2(255),         --商業名稱  
   COSTSID      VARCHAR2(2),           --公司狀態代碼  
-  COSTSIDCOMT  VARCHAR2(255),         --公司狀態說明  
+  COSTSIDCOMT  VARCHAR2(255),         --公司狀態說明
   REGOFC       VARCHAR2(15),          --登記機關  
   REGOFCCOMT   VARCHAR2(255),         --登記機關說明  
   BUSSLOCATION VARCHAR2(512),         --商業所在地, 
-  TXDAT     DATE, 
+  TXDAT        DATE, 
   constraint PK_T0NJ0547 primary key (BUSSRFNO, REGOFC) 
 ); 
 </pre>
 DETAIL TABLE
 
-<pre style="color:#000000;background:#ffffff;">Create table t0nj0547d 
+<pre style="color:#000000;background:#ffffff;">
+Create table t0nj0547d 
 ( 
   BUSSRFNO  VARCHAR2(8),               --商業統一編號  
   REGOFC    VARCHAR2(255),             --登記機關  
@@ -35,9 +37,6 @@ DETAIL TABLE
 
 <pre style="color:#000000;background:#ffffff;">
 public class T0nj0547d{
-    public T0nj0547d() {
-        super();
-    }
     private String bussrfno;
     private String regofc;
     private String it;
@@ -45,7 +44,6 @@ public class T0nj0547d{
     private String salitcomt;
 }	
 </pre>
-
 
 <pre style="color:#000000;background:#ffffff;">
 public class T0nj0547{
@@ -56,16 +54,18 @@ public class T0nj0547{
     private String bussnm;
     private String costsid;
     private String costsidcomt;
+    private String orgnTyNm;
     private String regofc;
     private String regofccomt;
     private String busslocation;
-    private List&lt;T0nj0547d&gt; t0nj0547d;
+    private List&lt;T0nj0547d&gt; businessItemOld;
 }
 </pre>
 ## 增設Java Interface作為service post 實作之用
 ### post使用addT0nj0547方法
 
-<pre style="color:#000000;background:#ffffff;">interface T0nj0547Service {
+<pre style="color:#000000;background:#ffffff;">
+interface T0nj0547Service {
     Response addT0nj0547(T0nj0547 t47);
 }
 </pre>
@@ -90,14 +90,12 @@ public class T0nj0547{
             if (authString == null || authString.isEmpty()) {
                 resp = "{\"error\":\"Accesskey is invalid\"}";
                 return Response.status(Response.Status.UNAUTHORIZED)
-                               .entity(resp)
-                               .build();
+                               .entity(resp).build();
             }
             if (!ACCESSKEY.equals(authString)) {
                 resp = "{\"error\":\"Accesskey is invalid\"}";
                 return Response.status(Response.Status.UNAUTHORIZED)
-                               .entity(resp)
-                               .build();
+                               .entity(resp).build();
             }
             // 將payload轉換為T0nj0547物件
             ObjectMapper objectMapper = new ObjectMapper();
@@ -105,28 +103,25 @@ public class T0nj0547{
 
             InsertDbT0nj0547 insT0nj0547 = new InsertDbT0nj0547(conn, t0nj0547);
             insT0nj0547.InsertDbT0nj0547();
-            if (t0nj0547.getT0nj0547d().size() > 0) {
-                System.out.println(t0nj0547.getBussrfno());
-                InsertDbT0nj0547d insT0nj0547d = new InsertDbT0nj0547d(conn, t0nj0547.getT0nj0547d());
+            List&lt;T0nj0547d&gt; businessItemOldList = t0nj0547.getBusinessItemOld();
+            if (businessItemOldList.size() > 0) {
+                InsertDbT0nj0547d insT0nj0547d = new InsertDbT0nj0547d(conn, businessItemOldList,t0nj0547.getBussrfno(),t0nj0547.getRegofc());
                 insT0nj0547d.InsertDbT0nj0547d();
             }
 
             resp = "{\"message\":\"資料已新增\",\"status\":\"" + Response.Status.CREATED + "\"}";
             return Response.status(Response.Status.CREATED)
-                           .entity(resp)
-                           .build();
+                           .entity(resp).build();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             String resp = "{\"message\":\"" + ex.getMessage().replace("\"", "\'") + "\"}";
             return Response.status(Response.Status.BAD_REQUEST)
-                           .entity(resp)
-                           .build();
+                           .entity(resp).build();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             String resp = "{\"message\":\"" + e.getMessage().replace("\"", "\'") + "\"}";
             return Response.status(Response.Status.BAD_REQUEST)
-                           .entity(resp)
-                           .build();
+                           .entity(resp).build();
         } finally {
             if (conn != null) {
                 try {
@@ -142,7 +137,8 @@ public class T0nj0547{
 
 ## 增設兩個Insert Table的類別(InsertDbT0nj0547、InsertDbT0nj0547d)
 
-<pre style="color:#000000;background:#ffffff;">public class InsertDbT0nj0547 {
+<pre style="color:#000000;background:#ffffff;">
+public class InsertDbT0nj0547 {
     private Connection conn = null;
     private T0nj0547 t47;
 
@@ -175,26 +171,31 @@ public class T0nj0547{
 }
 </pre>
 
-<pre style="color:#000000;background:#ffffff;">public class InsertDbT0nj0547d {
+<pre style="color:#000000;background:#ffffff;">
+public class InsertDbT0nj0547d {
     private Connection conn = null;
-    private List&lt;T0nj0547d&gt; t47d = new ArrayList&lt;T0nj0547d&gt;();
+    private List<T0nj0547d> t0nj0547d = new ArrayList<T0nj0547d>();
+    private String bussrfno = "";
+    private String regofc = "";
 
     public InsertDbT0nj0547d() {
     }
 
-    public InsertDbT0nj0547d(Connection conn, List&lt;T0nj0547d&gt; t47d) {
+    public InsertDbT0nj0547d(Connection conn, List<T0nj0547d> t0nj0547d, String bussrfno, String regofc) {
         this.conn = conn;
-        this.t47d = t47d;
+        this.t0nj0547d = t0nj0547d;
+        this.bussrfno = bussrfno;
+        this.regofc = regofc;
     }
 
-    public void InsertDbT0nj0547d() throws SQLException {
+    protected void InsertDbT0nj0547d() throws SQLException {
         Date date = new Date(System.currentTimeMillis());
         Timestamp today = new Timestamp(date.getTime());
         String sql = "INSERT INTO t0nj0547d(bussrfno, regofc, it, salit, salitcomt, txdat) VALUES (?,?,?,?,?,?)";
         PreparedStatement ps = conn.prepareStatement(sql);
-        for (T0nj0547d dt : t47d) {
-            ps.setString(1, dt.getBussrfno());
-            ps.setString(2, dt.getRegofc());
+        for (T0nj0547d dt : t0nj0547d) {
+            ps.setString(1, bussrfno);
+            ps.setString(2, regofc);
             ps.setString(3, dt.getIt());
             ps.setString(4, dt.getSalit());
             ps.setString(5, dt.getSalitcomt());
@@ -203,5 +204,30 @@ public class T0nj0547{
         }
         ps.close();
     }
+}
+</pre> 
+## 測試資料payload
+<pre style="color:#000000;background:#ffffff;">
+{
+    "President_No": "01465625",
+    "Business_Name": "XXXXX行",
+    "Business_Current_Status": "01",
+    "Business_Current_Status_Desc": "核准設立",
+    "Business_Organization_Type_Desc": "獨資",
+    "Agency": "123456789A",
+    "Agency_Desc": "XX市政府經濟發展局",
+    "Business_Address": "XXXXXX中港路XX巷15號",
+    "Business_Item_Old": [
+        {
+            "Business_Seq_No": "1",
+            "Business_Item": "F107200",
+            "Business_Item_Desc": "XXXX原料批發業"
+        },
+        {
+            "Business_Seq_No": "2",
+            "Business_Item": "F113030",
+            "Business_Item_Desc": "XXXX儀器批發業"
+        }
+    ]
 }
 </pre> 
