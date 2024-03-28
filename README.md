@@ -33,7 +33,7 @@ Create table t0nj0547d
 ); 
 </pre>
 
-## 增設Table物件，建立Java Class並宣告變數，並產生get/set method
+## 增設Table物件，建立Java Class並宣告payload對應的變數，並產生get/set method
 
 <pre style="color:#000000;background:#ffffff;">
 public class T0nj0547d{
@@ -47,9 +47,6 @@ public class T0nj0547d{
 
 <pre style="color:#000000;background:#ffffff;">
 public class T0nj0547{
-    public T0nj0547() {
-        super();
-    }
     private String bussrfno;
     private String bussnm;
     private String costsid;
@@ -58,7 +55,7 @@ public class T0nj0547{
     private String regofc;
     private String regofccomt;
     private String busslocation;
-    private List&lt;T0nj0547d&gt; businessItemOld;
+    private List&lt;T0nj0547d&gt; t0nj0547d;
 }
 </pre>
 ## 增設Java Interface作為service post 實作之用
@@ -102,13 +99,14 @@ interface T0nj0547Service {
             T0nj0547 t0nj0547 = objectMapper.readValue(payload, T0nj0547.class);
 
             InsertDbT0nj0547 insT0nj0547 = new InsertDbT0nj0547(conn, t0nj0547);
+            //insert master data
             insT0nj0547.InsertDbT0nj0547();
-            List&lt;T0nj0547d&gt; businessItemOldList = t0nj0547.getBusinessItemOld();
-            if (businessItemOldList.size() > 0) {
-                InsertDbT0nj0547d insT0nj0547d = new InsertDbT0nj0547d(conn, businessItemOldList,t0nj0547.getBussrfno(),t0nj0547.getRegofc());
+            List&lt;T0nj0547d&gt; t0nj0547d = t0nj0547.getBusinessItemOld();
+            if (t0nj0547d.size() > 0) {
+                InsertDbT0nj0547d insT0nj0547d = new InsertDbT0nj0547d(conn, t0nj0547d,t0nj0547.getBussrfno(),t0nj0547.getRegofc());
+                //insert detail datas
                 insT0nj0547d.InsertDbT0nj0547d();
             }
-
             resp = "{\"message\":\"資料已新增\",\"status\":\"" + Response.Status.CREATED + "\"}";
             return Response.status(Response.Status.CREATED)
                            .entity(resp).build();
@@ -144,7 +142,7 @@ public class InsertDbT0nj0547 {
 
     public InsertDbT0nj0547() {
     }
-    //CONSTRUCTOR
+
     public InsertDbT0nj0547(Connection conn, T0nj0547 t47) {
         this.conn = conn;
         this.t47 = t47;
@@ -206,6 +204,8 @@ public class InsertDbT0nj0547d {
     }
 }
 </pre> 
+## 將T0nj0547ServiceImp Create restful web service
+![queryData](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_010.png)
 ## 測試資料payload
 <pre style="color:#000000;background:#ffffff;">
 {
