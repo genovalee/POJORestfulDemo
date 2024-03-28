@@ -205,6 +205,10 @@ public class InsertDbT0nj0547d {
     }
 }
 </pre> 
+## 增設資料庫連線
+![create Application resourece](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_016.png)
+![create Database connection](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_015.png)
+
 ## 將T0nj0547ServiceImp Create restful web service
 ![create Resuful Service](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_010.png)
 ## 測試資料payload
