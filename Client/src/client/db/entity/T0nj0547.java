@@ -10,29 +10,24 @@ public class T0nj0547 {
     public T0nj0547() {
         super();
     }
-    @JsonProperty("Bussrfno")
-    @NotNull
+    @JsonProperty("President_No")
     private String bussrfno;
-    @JsonProperty("Bussnm")
-    @NotNull
+    @JsonProperty("Business_Name")
     private String bussnm;
-    @JsonProperty("Costsid")
-    @NotNull
+    @JsonProperty("Business_Current_Status")
     private String costsid;
-    @JsonProperty("Costsidcomt")
-    @NotNull
+    @JsonProperty("Business_Current_Status_Desc")
     private String costsidcomt;
-    @JsonProperty("Regofc")
-    @NotNull
+    @JsonProperty("Business_Organization_Type_Desc")
+    private String orgnTyNm;
+    @JsonProperty("Agency")
     private String regofc;
-    @JsonProperty("Regofccomt")
-    @NotNull
+    @JsonProperty("Agency_Desc")
     private String regofccomt;
-    @JsonProperty("Busslocation")
-    @NotNull
+    @JsonProperty("Business_Address")
     private String busslocation;
-    @JsonProperty("T0nj0547d")
-    private List<T0nj0547d> t0nj0547d;
+    @JsonProperty("Business_Item_Old")
+    private List<T0nj0547d> businessItemOld;
 
     public void setBussrfno(String bussrfno) {
         this.bussrfno = bussrfno;
@@ -66,6 +61,14 @@ public class T0nj0547 {
         return costsidcomt;
     }
 
+    public void setOrgnTyNm(String orgnTyNm) {
+        this.orgnTyNm = orgnTyNm;
+    }
+
+    public String getOrgnTyNm() {
+        return orgnTyNm;
+    }
+
     public void setRegofc(String regofc) {
         this.regofc = regofc;
     }
@@ -90,11 +93,11 @@ public class T0nj0547 {
         return busslocation;
     }
 
-    public void setT0nj0547d(List<T0nj0547d> t0nj0547d) {
-        this.t0nj0547d = t0nj0547d;
+    public List<T0nj0547d> getBusinessItemOld() {
+        return businessItemOld;
     }
 
-    public List<T0nj0547d> getT0nj0547d() {
-        return t0nj0547d;
+    public void setBusinessItemOld(List<T0nj0547d> businessItemOld) {
+        this.businessItemOld = businessItemOld;
     }
 }

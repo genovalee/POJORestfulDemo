@@ -2,11 +2,16 @@ package client;
 
 import client.db.entity.T0nj0547;
 
+
+import client.db.entity.T0nj0547d;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.Connection;
 
 import java.sql.SQLException;
+
+import java.util.List;
 
 import javax.naming.InitialContext;
 
@@ -55,15 +60,17 @@ public class T0nj0547ServiceImp implements T0nj0547Service {
                                .entity(resp)
                                .build();
             }
-            // 將payload轉換為T0nj0547物件
+            // 將payload轉換為T0nj0547物件(反序列化將json轉成java物件)
             ObjectMapper objectMapper = new ObjectMapper();
+            
             T0nj0547 t0nj0547 = objectMapper.readValue(payload, T0nj0547.class);
 
             InsertDbT0nj0547 insT0nj0547 = new InsertDbT0nj0547(conn, t0nj0547);
             insT0nj0547.InsertDbT0nj0547();
-            if (t0nj0547.getT0nj0547d().size() > 0) {
-                System.out.println(t0nj0547.getBussrfno());
-                InsertDbT0nj0547d insT0nj0547d = new InsertDbT0nj0547d(conn, t0nj0547.getT0nj0547d());
+            List<T0nj0547d> businessItemOldList = t0nj0547.getBusinessItemOld();
+            if (businessItemOldList.size() > 0) {
+//                System.out.println(t0nj0547.getBussrfno());
+                InsertDbT0nj0547d insT0nj0547d = new InsertDbT0nj0547d(conn, businessItemOldList,t0nj0547.getBussrfno(),t0nj0547.getRegofc());
                 insT0nj0547d.InsertDbT0nj0547d();
             }
 
