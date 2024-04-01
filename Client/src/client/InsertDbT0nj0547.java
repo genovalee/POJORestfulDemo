@@ -28,16 +28,17 @@ public class InsertDbT0nj0547 {
         String sql =
             "INSERT INTO t0nj0547(bussrfno, bussnm, costsid, costsidcomt, regofc, regofccomt, busslocation, txdat) " +
             "VALUES (?,?,?,?,?,?,?,?)";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setString(1, t0nj0547.getBussrfno());
-        ps.setString(2, t0nj0547.getBussnm());
-        ps.setString(3, t0nj0547.getCostsid());
-        ps.setString(4, t0nj0547.getCostsidcomt());
-        ps.setString(5, t0nj0547.getRegofc());
-        ps.setString(6, t0nj0547.getRegofccomt());
-        ps.setString(7, t0nj0547.getBusslocation());
-        ps.setTimestamp(8, today);
-        ps.execute();
-        ps.close();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, t0nj0547.getBussrfno());
+            ps.setString(2, t0nj0547.getBussnm());
+            ps.setString(3, t0nj0547.getCostsid());
+            ps.setString(4, t0nj0547.getCostsidcomt());
+            ps.setString(5, t0nj0547.getRegofc());
+            ps.setString(6, t0nj0547.getRegofccomt());
+            ps.setString(7, t0nj0547.getBusslocation());
+            ps.setTimestamp(8, today);
+            ps.execute();
+            ps.close();
+        }
     }
 }

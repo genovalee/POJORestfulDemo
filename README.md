@@ -70,57 +70,63 @@ interface T0nj0547Service {
 ### Override addT0nj0547方法
 <pre style="color:#000000;background:#ffffff;">
 public class T0nj0547ServiceImp implements T0nj0547Service {
-    private Connection conn
+    private Connection conn;
     private final String ACCESSKEY = "eHh4eHh4Onl5eXl5eQ";
     private String resp = "";
 
     public T0nj0547ServiceImp() throws NamingException, SQLException {
         super();
         InitialContext ic = new InitialContext();
-        DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/XXXXDS");
+        DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/t078DS");
         conn = ds.getConnection();
         conn.setAutoCommit(true);
     }
 
     @Override
-    public Response addT0nj0547(T0nj0547 t47) {
-      try {
+    @POST
+    @Consumes("application/json")
+    @Produces("application/json")
+    @Path("/add")
+    public Response addT0nj0547(String payload, @HeaderParam("accesskey") String authString) {
+        //        System.out.println(authString);
+        try {
             if (authString == null || authString.isEmpty()) {
                 resp = "{\"error\":\"Accesskey is invalid\"}";
-                return Response.status(Response.Status.UNAUTHORIZED)
-                               .entity(resp).build();
+                return handleException(resp, Response.Status.UNAUTHORIZED);
             }
             if (!ACCESSKEY.equals(authString)) {
                 resp = "{\"error\":\"Accesskey is invalid\"}";
-                return Response.status(Response.Status.UNAUTHORIZED)
-                               .entity(resp).build();
+                return handleException(resp, Response.Status.UNAUTHORIZED);
             }
-            // 將payload轉換為T0nj0547物件
+            // 將payload轉換為T0nj0547物件(反序列化將json轉成java物件)
             ObjectMapper objectMapper = new ObjectMapper();
+
             T0nj0547 t0nj0547 = objectMapper.readValue(payload, T0nj0547.class);
 
             InsertDbT0nj0547 insT0nj0547 = new InsertDbT0nj0547(conn, t0nj0547);
-            //insert master data
             insT0nj0547.InsertDbT0nj0547();
-            List&lt;T0nj0547d&gt; t0nj0547d = t0nj0547.getBusinessItemOld();
-            if (t0nj0547d.size() > 0) {
-                InsertDbT0nj0547d insT0nj0547d = new InsertDbT0nj0547d(conn, t0nj0547d,t0nj0547.getBussrfno(),t0nj0547.getRegofc());
-                //insert detail datas
+            List<T0nj0547d> t0nj0547d = t0nj0547.getT0nj0547d();
+            if (t0nj0547d.size() >
+                0) {
+                //                System.out.println(t0nj0547.getBussrfno());
+                InsertDbT0nj0547d insT0nj0547d =
+ new InsertDbT0nj0547d(conn, t0nj0547d, t0nj0547.getBussrfno(), t0nj0547.getRegofc());
                 insT0nj0547d.InsertDbT0nj0547d();
             }
+
             resp = "{\"message\":\"資料已新增\",\"status\":\"" + Response.Status.CREATED + "\"}";
             return Response.status(Response.Status.CREATED)
-                           .entity(resp).build();
+                           .entity(resp)
+                           .build();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             System.out.println(ex.getMessage());
             String resp = "{\"message\":\"" + ex.getMessage().replace("\"", "\'") + "\"}";
-            return Response.status(Response.Status.BAD_REQUEST)
-                           .entity(resp).build();
+            return handleException(resp, Response.Status.BAD_REQUEST);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             String resp = "{\"message\":\"" + e.getMessage().replace("\"", "\'") + "\"}";
-            return Response.status(Response.Status.BAD_REQUEST)
-                           .entity(resp).build();
+            return handleException(resp, Response.Status.BAD_REQUEST);
         } finally {
             if (conn != null) {
                 try {
@@ -130,6 +136,14 @@ public class T0nj0547ServiceImp implements T0nj0547Service {
                 }
             }
         }
+    }
+
+    // 異常訊息處理方法
+    private Response handleException(String errorMessage, Response.Status status) {
+        resp = "{\"error\":\"" + errorMessage + "\"}";
+        return Response.status(status)
+                       .entity(resp)
+                       .build();
     }
 }
 </pre>
@@ -149,23 +163,24 @@ public class InsertDbT0nj0547 {
         this.t47 = t47;
     }
 
-    public void InsertDbT0nj0547() throws SQLException {
+    protected void InsertDbT0nj0547() throws SQLException {
         Date date = new Date(System.currentTimeMillis());
         Timestamp today = new Timestamp(date.getTime());
         String sql =
             "INSERT INTO t0nj0547(bussrfno, bussnm, costsid, costsidcomt, regofc, regofccomt, busslocation, txdat) " +
             "VALUES (?,?,?,?,?,?,?,?)";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setString(1, t47.getBussrfno());
-        ps.setString(2, t47.getBussnm());
-        ps.setString(3, t47.getCostsid());
-        ps.setString(4, t47.getCostsidcomt());
-        ps.setString(5, t47.getRegofc());
-        ps.setString(6, t47.getRegofccomt());
-        ps.setString(7, t47.getBusslocation());
-        ps.setTimestamp(8, today);
-        ps.execute();
-        ps.close();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, t0nj0547.getBussrfno());
+            ps.setString(2, t0nj0547.getBussnm());
+            ps.setString(3, t0nj0547.getCostsid());
+            ps.setString(4, t0nj0547.getCostsidcomt());
+            ps.setString(5, t0nj0547.getRegofc());
+            ps.setString(6, t0nj0547.getRegofccomt());
+            ps.setString(7, t0nj0547.getBusslocation());
+            ps.setTimestamp(8, today);
+            ps.execute();
+            ps.close();
+        }
     }
 }
 </pre>
@@ -191,17 +206,18 @@ public class InsertDbT0nj0547d {
         Date date = new Date(System.currentTimeMillis());
         Timestamp today = new Timestamp(date.getTime());
         String sql = "INSERT INTO t0nj0547d(bussrfno, regofc, it, salit, salitcomt, txdat) VALUES (?,?,?,?,?,?)";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        for (T0nj0547d dt : t0nj0547d) {
-            ps.setString(1, bussrfno);
-            ps.setString(2, regofc);
-            ps.setString(3, dt.getIt());
-            ps.setString(4, dt.getSalit());
-            ps.setString(5, dt.getSalitcomt());
-            ps.setTimestamp(6, today);
-            ps.execute();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            for (T0nj0547d dt : t0nj0547d) {
+                ps.setString(1, bussrfno);
+                ps.setString(2, regofc);
+                ps.setString(3, dt.getIt());
+                ps.setString(4, dt.getSalit());
+                ps.setString(5, dt.getSalitcomt());
+                ps.setTimestamp(6, today);
+                ps.execute();
+            }
+            ps.close();
         }
-        ps.close();
     }
 }
 </pre> 
