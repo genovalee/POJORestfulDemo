@@ -48,14 +48,11 @@ public class T0nj0547ServiceImp implements T0nj0547Service {
     public Response addT0nj0547(String payload, @HeaderParam("accesskey") String authString) {
         //        System.out.println(authString);
         try {
-            if (authString == null || authString.isEmpty()) {
+            if (authString == null || authString.isEmpty() || !ACCESSKEY.equals(authString)) {
                 resp = "{\"error\":\"Accesskey is invalid\"}";
                 return handleException(resp, Response.Status.UNAUTHORIZED);
             }
-            if (!ACCESSKEY.equals(authString)) {
-                resp = "{\"error\":\"Accesskey is invalid\"}";
-                return handleException(resp, Response.Status.UNAUTHORIZED);
-            }
+
             // 將payload轉換為T0nj0547物件(反序列化將json轉成java物件)
             ObjectMapper objectMapper = new ObjectMapper();
 

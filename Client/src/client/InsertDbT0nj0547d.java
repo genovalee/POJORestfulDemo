@@ -33,17 +33,16 @@ public class InsertDbT0nj0547d {
         Date date = new Date(System.currentTimeMillis());
         Timestamp today = new Timestamp(date.getTime());
         String sql = "INSERT INTO t0nj0547d(bussrfno, regofc, it, salit, salitcomt, txdat) VALUES (?,?,?,?,?,?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            for (T0nj0547d dt : t0nj0547d) {
-                ps.setString(1, bussrfno);
-                ps.setString(2, regofc);
-                ps.setString(3, dt.getIt());
-                ps.setString(4, dt.getSalit());
-                ps.setString(5, dt.getSalitcomt());
-                ps.setTimestamp(6, today);
-                ps.execute();
-            }
-            ps.close();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        for (T0nj0547d dt : t0nj0547d) {
+            ps.setString(1, bussrfno);
+            ps.setString(2, regofc);
+            ps.setString(3, dt.getIt());
+            ps.setString(4, dt.getSalit());
+            ps.setString(5, dt.getSalitcomt());
+            ps.setTimestamp(6, today);
+            ps.execute();
         }
+        ps.close();
     }
 }
