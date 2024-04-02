@@ -71,17 +71,18 @@ interface T0nj0547Service {
 <pre style="color:#000000;background:#ffffff;">
 public class T0nj0547ServiceImp implements T0nj0547Service {
     private Connection conn;
-    private final String ACCESSKEY = "eHh4eHh4Onl5eXl5eQ";
+    private final String ACCESSKEY = "<span style="color:red;font-weight:bold">eHh4eHh4Onl5eXl5eQ</span>";
     private String resp = "";
 
     public T0nj0547ServiceImp() throws NamingException, SQLException {
         super();
         InitialContext ic = new InitialContext();
-        DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/xxxxDS");
+        DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/<span style="color:red;font-weight:bold">xxxxDS</span>");
         conn = ds.getConnection();
         conn.setAutoCommit(true);
     }
 
+    @Override
     public Response addT0nj0547(String payload, String authString) {
 
         try {
@@ -130,7 +131,6 @@ public class T0nj0547ServiceImp implements T0nj0547Service {
         resp = "{\"error\":\"" + errorMessage + "\"}";
         return Response.status(status).entity(resp).build();
     }
-}
 </pre>
 
 ## 增設兩個Insert Table的類別(InsertDbT0nj0547、InsertDbT0nj0547d)
@@ -155,7 +155,7 @@ public class InsertDbT0nj0547 {
         String sql =
             "INSERT INTO t0nj0547(bussrfno, bussnm, costsid, costsidcomt, regofc, regofccomt, busslocation, txdat) " +
             "VALUES (?,?,?,?,?,?,?,?)";
-        try (<span style="color:red">PreparedStatement ps = conn.prepareStatement(sql)</span>) {
+        try (<span style="color:red;font-weight:bold">PreparedStatement ps = conn.prepareStatement(sql)</span>) {
             ps.setString(1, t0nj0547.getBussrfno());
             ps.setString(2, t0nj0547.getBussnm());
             ps.setString(3, t0nj0547.getCostsid());
@@ -212,16 +212,16 @@ public class InsertDbT0nj0547d {
 ## 將T0nj0547ServiceImp Create restful web service
 ![create Resuful Service](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_010.png)
 ## 測試資料payload
-<pre style="color:#000000;background:#ffffff;">
+<pre style="color:#000000;background:#ffff99;">
 {
-    "President_No": "01465625",
+    "President_No": "12345678",
     "Business_Name": "XXXXX行",
     "Business_Current_Status": "01",
     "Business_Current_Status_Desc": "核准設立",
     "Business_Organization_Type_Desc": "獨資",
     "Agency": "123456789A",
     "Agency_Desc": "XX市政府經濟發展局",
-    "Business_Address": "XXXXXX中港路XX巷15號",
+    "Business_Address": "XXXXXX中X路XX巷15號",
     "Business_Item_Old": [
         {
             "Business_Seq_No": "1",
