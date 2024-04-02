@@ -1,8 +1,8 @@
 # POJO RESTFul Api 程式撰寫、測試 
 ## 建立 MD 資料表
 
-MASTER TABLE:
-<pre style="color:#000000;background:#ffffff;">
+*MASTER TABLE*:
+<pre style="color:#000000;background:#ffff99;">
 Create table t0nj0547 
 ( 
   BUSSRFNO     VARCHAR2(8),           --商業統一編號  
@@ -16,9 +16,12 @@ Create table t0nj0547
   constraint PK_T0NJ0547 primary key (BUSSRFNO, REGOFC) 
 ); 
 </pre>
-DETAIL TABLE
 
-<pre style="color:#000000;background:#ffffff;">
+---
+
+*DETAIL TABLE*
+
+<pre style="color:#000000;background:#ffff99;">
 Create table t0nj0547d 
 ( 
   BUSSRFNO  VARCHAR2(8),               --商業統一編號  
@@ -35,7 +38,7 @@ Create table t0nj0547d
 
 ## 增設Table物件，建立Java Class並宣告payload對應的變數，並產生get/set method
 
-<pre style="color:#000000;background:#ffffff;">
+<pre style="color:#000000;background:#ffff99;">
 public class T0nj0547d{
     private String bussrfno;
     private String regofc;
@@ -45,7 +48,7 @@ public class T0nj0547d{
 }	
 </pre>
 
-<pre style="color:#000000;background:#ffffff;">
+<pre style="color:#000000;background:#ffff99;">
 public class T0nj0547{
     private String bussrfno;
     private String bussnm;
@@ -69,25 +72,26 @@ interface T0nj0547Service {
 ## 增設Java Class實作上面宣告的Interface
 ### Override addT0nj0547方法
 <pre style="color:#000000;background:#ffffff;">
-<span style='color:#800000; font-weight:bold; '>public class</span> T0nj0547ServiceImp <span style='color:#800000; font-weight:bold; '>implements</span> T0nj0547Service {
-    <span style='color:#800000; font-weight:bold; '>private</span> <span style='color:#bb7977; font-weight:bold; '>Connection</span> conn;
-    <span style='color:#800000; font-weight:bold; '>private final</span> <span style='color:#bb7977; font-weight:bold; '>String</span> ACCESSKEY = "<span style="color:red;font-weight:bold">eHh4eHh4Onl5eXl5eQ</span>";
-    <span style='color:#800000; font-weight:bold; '>private</span> <span style='color:#bb7977; font-weight:bold; '>String</span> resp = "";
+public class T0nj0547ServiceImp implements T0nj0547Service {
+    private Connection conn;
+    private final String ACCESSKEY = "<span style="color:red;font-weight:bold">eHh4eHh4Onl5eXl5eQ</span>";
+    private String resp = "";
 
-    <span style='color:#800000; font-weight:bold; '>public</span> T0nj0547ServiceImp() throws NamingException, SQLException {
-        <span style='color:#800000; font-weight:bold; '>super</span>();
-        InitialContext ic = <span style='color:#800000; font-weight:bold; '>new</span> InitialContext();
+    public T0nj0547ServiceImp() throws NamingException, SQLException {
+        super();
+        InitialContext ic = new InitialContext();
         DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/<span style="color:red;font-weight:bold">xxxxDS</span>");
         conn = ds.getConnection();
-        conn.setAutoCommit(<span style='color:#800000; font-weight:bold; '>true</span>);
+        conn.setAutoCommit(true);
     }
 
     @Override
-    <span style='color:#800000; font-weight:bold; '>public</span> <span style='color:#bb7977; font-weight:bold; '>Response</span> addT0nj0547(<span style='color:#bb7977; font-weight:bold; '>String</span> payload, <span style='color:#bb7977; font-weight:bold; '>String</span> authString) {
-        <span style='color:#800000; font-weight:bold; '>try</span>  {
-            <span style='color:#800000; font-weight:bold;'>if</span>  (!ACCESSKEY.equals(authString)) {
-                resp = <span style='color:#0000e6; '>"{</span><span style='color:#0f69ff; '>\"</span><span style='color:#0000e6; '>error</span><span style='color:#0f69ff; '>\"</span><span style='color:#0000e6; '>:</span><span style='color:#0f69ff; '>\"</span><span style='color:#0000e6; '>Accesskey is invalid</span><span style='color:#0f69ff; '>\"</span><span style='color:#0000e6; '>}"</span>;
-                <span style='color:#800000; font-weight:bold; '>return</span>  handleException(resp, <span style='color:#bb7977; font-weight:bold; '>Response</span>.Status.UNAUTHORIZED);
+    public Response addT0nj0547(String payload, String authString) {
+
+        try {
+            if (!ACCESSKEY.equals(authString)) {
+                resp = "{\"error\":\"Accesskey is invalid\"}";
+                return handleException(resp, Response.Status.UNAUTHORIZED);
             }
             // 將payload轉換為T0nj0547物件(反序列化將json轉成java物件)
             ObjectMapper objectMapper = new ObjectMapper();
@@ -102,27 +106,26 @@ interface T0nj0547Service {
                 insT0nj0547d.InsertDbT0nj0547d();
             }
 
-            resp = "{\"message\":\"資料已新增\",\"status\":\"" + <span style='color:#bb7977; font-weight:bold; '>Response</span>.Status.CREATED + "\"}";
-            <span style='color:#800000; font-weight:bold; '>return</span> <span style='color:#bb7977; font-weight:bold; '>Response</span>.status(<span style='color:#bb7977; font-weight:bold; '>Response</span>.Status.CREATED)
+            resp = "{\"message\":\"資料已新增\",\"status\":\"" + Response.Status.CREATED + "\"}";
+            return Response.status(Response.Status.CREATED)
                            .entity(resp)
                            .build();
-        } <span style='color:#800000; font-weight:bold; '>catch</span> (SQLException ex) {
+        } catch (SQLException ex) {
             String resp = "{\"message\":\"" + ex.getMessage().replace("\"", "\'") + "\"}";
-            <span style='color:#800000; font-weight:bold; '>return</span> handleException(resp, <span style='color:#bb7977; font-weight:bold; '>Response</span>.Status.BAD_REQUEST);
-        } <span style='color:#800000; font-weight:bold; '>catch</span> (Exception e) {
+            return handleException(resp, Response.Status.BAD_REQUEST);
+        } catch (Exception e) {
             String resp = "{\"message\":\"" + e.getMessage().replace("\"", "\'") + "\"}";
-            <span style='color:#800000; font-weight:bold; '>return</span> handleException(resp, <span style='color:#bb7977; font-weight:bold; '>Response</span>.Status.BAD_REQUEST);
-        } <span style='color:#800000; font-weight:bold; '>finally</span> {
-            <span style='color:#800000; font-weight:bold; '>if</span> (conn != null) {
-                <span style='color:#800000; font-weight:bold; '>try</span> {
+            return handleException(resp, Response.Status.BAD_REQUEST);
+        } finally {
+            if (conn != null) {
+                try {
                     conn.close();
-                } <span style='color:#800000; font-weight:bold; '>catch</span> (SQLException e) {
-                    System.out.println("<span style='color:#0000e6; '>連線DB發生錯誤</span>");
+                } catch (SQLException e) {
+                    System.out.println("連線DB發生錯誤");
                 }
             }
         }
     }
-}
 </pre>
 
 ## 增設異常訊息處理方法
