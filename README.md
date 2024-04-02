@@ -77,38 +77,26 @@ public class T0nj0547ServiceImp implements T0nj0547Service {
     public T0nj0547ServiceImp() throws NamingException, SQLException {
         super();
         InitialContext ic = new InitialContext();
-        DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/t078DS");
+        DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/xxxxDS");
         conn = ds.getConnection();
         conn.setAutoCommit(true);
     }
 
-    @Override
-    @POST
-    @Consumes("application/json")
-    @Produces("application/json")
-    @Path("/add")
-    public Response addT0nj0547(String payload, @HeaderParam("accesskey") String authString) {
-        //        System.out.println(authString);
+    public Response addT0nj0547(String payload, String authString) {
+
         try {
-            if (authString == null || authString.isEmpty()) {
-                resp = "{\"error\":\"Accesskey is invalid\"}";
-                return handleException(resp, Response.Status.UNAUTHORIZED);
-            }
             if (!ACCESSKEY.equals(authString)) {
                 resp = "{\"error\":\"Accesskey is invalid\"}";
                 return handleException(resp, Response.Status.UNAUTHORIZED);
             }
             // 將payload轉換為T0nj0547物件(反序列化將json轉成java物件)
             ObjectMapper objectMapper = new ObjectMapper();
-
             T0nj0547 t0nj0547 = objectMapper.readValue(payload, T0nj0547.class);
 
             InsertDbT0nj0547 insT0nj0547 = new InsertDbT0nj0547(conn, t0nj0547);
             insT0nj0547.InsertDbT0nj0547();
-            List<T0nj0547d> t0nj0547d = t0nj0547.getT0nj0547d();
-            if (t0nj0547d.size() >
-                0) {
-                //                System.out.println(t0nj0547.getBussrfno());
+            List&lt;T0nj0547d&gt; t0nj0547d = t0nj0547.getT0nj0547d();
+            if (t0nj0547d.size() > 0) {
                 InsertDbT0nj0547d insT0nj0547d =
  new InsertDbT0nj0547d(conn, t0nj0547d, t0nj0547.getBussrfno(), t0nj0547.getRegofc());
                 insT0nj0547d.InsertDbT0nj0547d();
@@ -119,12 +107,9 @@ public class T0nj0547ServiceImp implements T0nj0547Service {
                            .entity(resp)
                            .build();
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            System.out.println(ex.getMessage());
             String resp = "{\"message\":\"" + ex.getMessage().replace("\"", "\'") + "\"}";
             return handleException(resp, Response.Status.BAD_REQUEST);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             String resp = "{\"message\":\"" + e.getMessage().replace("\"", "\'") + "\"}";
             return handleException(resp, Response.Status.BAD_REQUEST);
         } finally {
@@ -137,18 +122,19 @@ public class T0nj0547ServiceImp implements T0nj0547Service {
             }
         }
     }
+</pre>
 
-    // 異常訊息處理方法
+## 增設異常訊息處理方法
+<pre style="color:#000000;background:#ffffff;">
     private Response handleException(String errorMessage, Response.Status status) {
         resp = "{\"error\":\"" + errorMessage + "\"}";
-        return Response.status(status)
-                       .entity(resp)
-                       .build();
+        return Response.status(status).entity(resp).build();
     }
 }
 </pre>
 
 ## 增設兩個Insert Table的類別(InsertDbT0nj0547、InsertDbT0nj0547d)
+#### InsertDbT0nj0547類別的InsertDbT0nj0547方法，使用try-with-resource宣告 PreparedStatement進行資源AutoClose，執行insert指令完畢會自動關閉statement。
 
 <pre style="color:#000000;background:#ffffff;">
 public class InsertDbT0nj0547 {
@@ -169,7 +155,7 @@ public class InsertDbT0nj0547 {
         String sql =
             "INSERT INTO t0nj0547(bussrfno, bussnm, costsid, costsidcomt, regofc, regofccomt, busslocation, txdat) " +
             "VALUES (?,?,?,?,?,?,?,?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (<span style="color:red">PreparedStatement ps = conn.prepareStatement(sql)</span>) {
             ps.setString(1, t0nj0547.getBussrfno());
             ps.setString(2, t0nj0547.getBussnm());
             ps.setString(3, t0nj0547.getCostsid());
@@ -179,7 +165,6 @@ public class InsertDbT0nj0547 {
             ps.setString(7, t0nj0547.getBusslocation());
             ps.setTimestamp(8, today);
             ps.execute();
-            ps.close();
         }
     }
 }
@@ -188,14 +173,14 @@ public class InsertDbT0nj0547 {
 <pre style="color:#000000;background:#ffffff;">
 public class InsertDbT0nj0547d {
     private Connection conn = null;
-    private List<T0nj0547d> t0nj0547d = new ArrayList<T0nj0547d>();
+    private List&lt;T0nj0547d&gt; t0nj0547d = new ArrayList&lt;T0nj0547d&gt;();
     private String bussrfno = "";
     private String regofc = "";
 
     public InsertDbT0nj0547d() {
     }
 
-    public InsertDbT0nj0547d(Connection conn, List<T0nj0547d> t0nj0547d, String bussrfno, String regofc) {
+    public InsertDbT0nj0547d(Connection conn, List&lt;T0nj0547d&gt; t0nj0547d, String bussrfno, String regofc) {
         this.conn = conn;
         this.t0nj0547d = t0nj0547d;
         this.bussrfno = bussrfno;
