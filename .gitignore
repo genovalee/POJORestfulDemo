@@ -1,6 +1,7 @@
 *.jdb
 *.lck
-/.adf/
 /.data/
-/src/
-README.md.rej
+/Client/classes/
+/Client/Extlibs/
+/Client/public_html/
+/Client/src/client/db/
