@@ -77,7 +77,7 @@ public class T0nj0547ServiceImp implements T0nj0547Service {
     public T0nj0547ServiceImp() throws NamingException, SQLException {
         super();
         InitialContext ic = new InitialContext();
-        DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/<span style="color:red;font-weight:bold">xxxxDS</span>");
+        DataSource ds = (DataSource) ic.lookup("java:comp/env/jdbc/xxxxDS");
         conn = ds.getConnection();
         conn.setAutoCommit(true);
     }
@@ -155,7 +155,7 @@ public class InsertDbT0nj0547 {
         String sql =
             "INSERT INTO t0nj0547(bussrfno, bussnm, costsid, costsidcomt, regofc, regofccomt, busslocation, txdat) " +
             "VALUES (?,?,?,?,?,?,?,?)";
-        try (<span style="color:red;font-weight:bold">PreparedStatement ps = conn.prepareStatement(sql)</span>) {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, t0nj0547.getBussrfno());
             ps.setString(2, t0nj0547.getBussnm());
             ps.setString(3, t0nj0547.getCostsid());
