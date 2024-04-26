@@ -71,7 +71,7 @@ public interface T0nj0547Service {
 ```java
 public class T0nj0547ServiceImp implements T0nj0547Service {
     private Connection conn;
-    private final String ACCESSKEY = "<span style="color:red;font-weight:bold">eHh4eHh4Onl5eXl5eQ</span>";
+    private final String ACCESSKEY = "eHh4eHh4Onl5eXl5eQ";
     private String resp = "";
 
     public T0nj0547ServiceImp() throws NamingException, SQLException {
