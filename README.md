@@ -35,7 +35,7 @@ Create table t0nj0547d
 ```
 
 ## 增設Table物件，建立Java Class並宣告payload對應的變數，並產生get/set method
-```sql
+```java
 public class T0nj0547d{
     private String bussrfno;
     private String regofc;
@@ -45,7 +45,7 @@ public class T0nj0547d{
 }	
 ```
 
-```sql
+```java
 public class T0nj0547{
     private String bussrfno;
     private String bussnm;
