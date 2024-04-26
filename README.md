@@ -212,7 +212,7 @@ public class InsertDbT0nj0547d {
 ## 將T0nj0547ServiceImp Create restful web service
 ![create Resuful Service](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_010.png)
 ## 測試資料payload
-<pre style="color:#000000;background:#ffff99;">
+```json
 {
     "President_No": "12345678",
     "Business_Name": "XXXXX行",
@@ -235,6 +235,6 @@ public class InsertDbT0nj0547d {
         }
     ]
 }
-</pre> 
+```
 ![post test](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_002.png)
 ![queryData](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_003.png)
