@@ -2,7 +2,7 @@
 ## 建立 MD 資料表
 
 *MASTER TABLE*:
-<pre style="color:#000000;background:#ffff99;">
+```sql
 Create table t0nj0547 
 ( 
   BUSSRFNO     VARCHAR2(8),           --商業統一編號  
@@ -15,13 +15,11 @@ Create table t0nj0547
   TXDAT        DATE, 
   constraint PK_T0NJ0547 primary key (BUSSRFNO, REGOFC) 
 ); 
-</pre>
-
----
+```
 
 *DETAIL TABLE*
 
-<pre style="color:#000000;background:#ffff99;">
+```sql
 Create table t0nj0547d 
 ( 
   BUSSRFNO  VARCHAR2(8),               --商業統一編號  
@@ -34,11 +32,10 @@ Create table t0nj0547d
   constraint FK_T0NJ0547D foreign key (BUSSRFNO, REGOFC) 
   references T0NJ0547 (BUSSRFNO, REGOFC) on delete cascade 
 ); 
-</pre>
+```
 
 ## 增設Table物件，建立Java Class並宣告payload對應的變數，並產生get/set method
-
-<pre style="color:#000000;background:#ffff99;">
+```sql
 public class T0nj0547d{
     private String bussrfno;
     private String regofc;
@@ -46,9 +43,9 @@ public class T0nj0547d{
     private String salit;
     private String salitcomt;
 }	
-</pre>
+```
 
-<pre style="color:#000000;background:#ffff99;">
+```sql
 public class T0nj0547{
     private String bussrfno;
     private String bussnm;
@@ -60,18 +57,18 @@ public class T0nj0547{
     private String busslocation;
     private List&lt;T0nj0547d&gt; t0nj0547d;
 }
-</pre>
+```
 ## 增設Java Interface作為service post 實作之用
 ### post使用addT0nj0547方法
 
-<pre style="color:#000000;background:#ffffff;">
-interface T0nj0547Service {
+```java
+public interface T0nj0547Service {
     Response addT0nj0547(T0nj0547 t47);
 }
-</pre>
+```
 ## 增設Java Class實作上面宣告的Interface
 ### Override addT0nj0547方法
-<pre style="color:#000000;background:#ffffff;">
+```java
 public class T0nj0547ServiceImp implements T0nj0547Service {
     private Connection conn;
     private final String ACCESSKEY = "<span style="color:red;font-weight:bold">eHh4eHh4Onl5eXl5eQ</span>";
@@ -126,20 +123,20 @@ public class T0nj0547ServiceImp implements T0nj0547Service {
             }
         }
     }
-</pre>
+```
 
 ## 增設異常訊息處理方法
-<pre style="color:#000000;background:#ffffff;">
+```java
     private Response handleException(String errorMessage, Response.Status status) {
         resp = "{\"error\":\"" + errorMessage + "\"}";
         return Response.status(status).entity(resp).build();
     }
-</pre>
+```
 
 ## 增設兩個Insert Table的類別(InsertDbT0nj0547、InsertDbT0nj0547d)
 #### InsertDbT0nj0547類別的InsertDbT0nj0547方法，使用try-with-resource宣告 PreparedStatement進行資源AutoClose，執行insert指令完畢會自動關閉statement。
 
-<pre style="color:#000000;background:#ffffff;">
+```java
 public class InsertDbT0nj0547 {
     private Connection conn = null;
     private T0nj0547 t47;
@@ -171,9 +168,9 @@ public class InsertDbT0nj0547 {
         }
     }
 }
-</pre>
+```
 
-<pre style="color:#000000;background:#ffffff;">
+```java
 public class InsertDbT0nj0547d {
     private Connection conn = null;
     private List&lt;T0nj0547d&gt; t0nj0547d = new ArrayList&lt;T0nj0547d&gt;();
@@ -207,7 +204,7 @@ public class InsertDbT0nj0547d {
         ps.close();
     }
 }
-</pre> 
+```
 ## 增設資料庫連線
 ![create Application resourece](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_016.png)
 ![create Database connection](https://github.com/genovalee/PojoRestfulDemo/blob/master/Client/src/client/db/Image_015.png)
