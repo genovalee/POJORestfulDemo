@@ -96,7 +96,7 @@ public class T0nj0547ServiceImp implements T0nj0547Service {
 
             InsertDbT0nj0547 insT0nj0547 = new InsertDbT0nj0547(conn, t0nj0547);
             insT0nj0547.InsertDbT0nj0547();
-            List&lt;T0nj0547d&gt; t0nj0547d = t0nj0547.getT0nj0547d();
+            List<T0nj0547d> t0nj0547d = t0nj0547.getT0nj0547d();
             if (t0nj0547d.size() > 0) {
                 InsertDbT0nj0547d insT0nj0547d =
  new InsertDbT0nj0547d(conn, t0nj0547d, t0nj0547.getBussrfno(), t0nj0547.getRegofc());
@@ -173,7 +173,7 @@ public class InsertDbT0nj0547 {
 ```java
 public class InsertDbT0nj0547d {
     private Connection conn = null;
-    private List&lt;T0nj0547d&gt; t0nj0547d = new ArrayList&lt;T0nj0547d&gt;();
+    private List<T0nj0547d> t0nj0547d = new ArrayList<>();
     private String bussrfno = "";
     private String regofc = "";
 
