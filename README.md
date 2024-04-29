@@ -42,7 +42,8 @@ public class T0nj0547d{
     private String it;
     private String salit;
     private String salitcomt;
-}	
+}
+//先建立detail table
 ```
 
 ```java
@@ -55,8 +56,9 @@ public class T0nj0547{
     private String regofc;
     private String regofccomt;
     private String busslocation;
-    private List&lt;T0nj0547d&gt; t0nj0547d;
+    private List<T0nj0547d> t0nj0547d;
 }
+//再建立master table
 ```
 ## 增設Java Interface作為service post 實作之用
 ### post使用addT0nj0547方法
