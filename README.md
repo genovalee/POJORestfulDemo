@@ -180,7 +180,7 @@ public class InsertDbT0nj0547d {
     public InsertDbT0nj0547d() {
     }
 
-    public InsertDbT0nj0547d(Connection conn, List&lt;T0nj0547d&gt; t0nj0547d, String bussrfno, String regofc) {
+    public InsertDbT0nj0547d(Connection conn, List<T0nj0547d> t0nj0547d, String bussrfno, String regofc) {
         this.conn = conn;
         this.t0nj0547d = t0nj0547d;
         this.bussrfno = bussrfno;
